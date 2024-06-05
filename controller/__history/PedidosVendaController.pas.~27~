@@ -1,0 +1,185 @@
+unit PedidosVendaController;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, Vcl.StdCtrls, Vcl.Grids, System.UITypes,
+  Vcl.DBGrids, Vcl.ExtCtrls, Vcl.DBCtrls;
+
+type
+  TPedidosVendaController = class
+
+  private
+
+  public
+    procedure AddProduto;
+    procedure CancelarPedido;
+    procedure CarregarPedido;
+    procedure GravarPedido;
+    procedure LimparTela;
+    procedure ApagarProdutoPedido;
+    procedure ClienteChange;
+    procedure ProdutoChange;
+    procedure ConsultaCliente;
+    procedure ConsultaProduto;
+  end;
+
+
+implementation
+
+uses dm, pedidosvenda, cliente, produto, util, ConsultaClientes,
+  ConsultaProdutos, PedidoVendaModel;
+
+{ TPedidosVendaController }
+
+procedure TPedidosVendaController.AddProduto;
+begin
+
+  if FPedidosVenda.edCodProduto.Text <> '' then
+  begin
+    FPedidosVendaModel.AdicionarProduto(StrToInt(FPedidosVenda.EdcodProduto.Text),
+      StrToInt(FPedidosVenda.edCodCliente.Text),
+      StrToFloat(FPedidosVenda.EdQuantidade.Text), StrToFloat(FPedidosVenda.edPrecoUnitario.Text));
+
+    FPedidosVenda.EdQuantidade.Text := '1';
+    FPedidosVenda.edCodProduto.Text := '';
+    FPedidosVenda.edCodProduto.SetFocus;
+  end
+  else
+  if (FPedidosVendaModel.tbPedidoProdutos.State in dseditmodes) then
+    FPedidosVendaModel.tbPedidoProdutos.Post;
+
+  FPedidosVenda.lbTotal.Caption := FormatFloat('R$ #,##0.00', DataModuleConexao.CalcularTotalPedido);
+
+end;
+
+procedure TPedidosVendaController.ApagarProdutoPedido;
+begin
+
+  DataModuleConexao.ApagarProdutoPedido;
+  FPedidosVenda.lbTotal.Caption := FormatFloat('R$ #,##0.00', DataModuleConexao.CalcularTotalPedido);
+
+end;
+
+procedure TPedidosVendaController.CancelarPedido;
+begin
+
+  DataModuleConexao.ApagarPedido;
+
+end;
+
+procedure TPedidosVendaController.CarregarPedido;
+begin
+
+  if DataModuleConexao.CarregarPedido then
+  begin
+    FPedidosVenda.edCodCliente.Text := DataModuleConexao.tbPedidoProdutosCodigoCliente.AsString;
+    FPedidosVenda.lbTotal.Caption := FormatFloat('R$ #,##0.00', DataModuleConexao.CalcularTotalPedido);
+  end;
+
+end;
+
+procedure TPedidosVendaController.ClienteChange;
+var
+  Cliente : Tcliente;
+begin
+
+  if TUtil.EhNumero(FPedidosVenda.edCodCliente.Text) and (FPedidosVenda.edCodCliente.Text <> '') then
+  begin
+    cliente := TCliente.Create(DataModuleConexao.conexao);
+    try
+      cliente.Pesquisar(FPedidosVenda.edCodCliente.Text);
+      FPedidosVenda.edCliente.Text := Cliente.Nome;
+    finally
+      FreeAndNil(Cliente);
+    end;
+  end
+  else
+    FPedidosVenda.edCliente.Text := '';
+
+  FPedidosVenda.btCarregarPedido.Visible := FPedidosVenda.edCodCliente.Text = '';
+  FPedidosVenda.btCancelarPedido.Visible := FPedidosVenda.edCodCliente.Text = '';
+
+end;
+
+procedure TPedidosVendaController.ConsultaCliente;
+var
+  consulta : TFConsultaClientes;
+begin
+
+  consulta := TFConsultaClientes.Create(nil);
+  try
+    consulta.consulta;
+    consulta.ShowModal;
+    if consulta.Codigo > 0 then
+      FPedidosVenda.edCodCliente.Text := consulta.Codigo.ToString;
+  finally
+    FreeAndNil(consulta);
+  end;
+
+end;
+
+procedure TPedidosVendaController.ConsultaProduto;
+var
+  consulta : TFConsultaProdutos;
+begin
+
+  consulta := TFConsultaProdutos.Create(nil);
+  try
+    consulta.consulta;
+    consulta.ShowModal;
+    if consulta.Codigo > 0 then
+      FPedidosVenda.edCodProduto.Text := consulta.Codigo.ToString;
+  finally
+    FreeAndNil(consulta);
+  end;
+end;
+
+procedure TPedidosVendaController.GravarPedido;
+begin
+
+  if DataModuleConexao.GravarPedido then
+    limparTela;
+
+end;
+
+procedure TPedidosVendaController.LimparTela;
+begin
+
+  FPedidosVenda.edCodCliente.Text := '';
+  FPedidosVenda.edCodCliente.SetFocus;
+  FPedidosVenda.edCodProduto.Text := '';
+  FPedidosVenda.EdQuantidade.Text := '1';
+  FPedidosVenda.edPrecoUnitario.Text := '0,00';
+  FPedidosVenda.lbTotal.Caption := 'R$ 0,00';
+  if not DataModuleConexao.tbPedidoProdutos.IsEmpty then
+    DataModuleConexao.tbPedidoProdutos.EmptyDataSet;
+
+end;
+
+procedure TPedidosVendaController.ProdutoChange;
+var
+  Produto : TProduto;
+begin
+
+  if TUtil.EhNumero(FPedidosVenda.edCodProduto.Text) and (FPedidosVenda.edCodProduto.Text <> '') then
+  begin
+
+    Produto := TProduto.Create(DataModuleConexao.conexao);
+    try
+      produto.Pesquisar(FPedidosVenda.edCodProduto.Text);
+      FPedidosVenda.EdDescProduto.Text := Produto.Descricao;
+      FPedidosVenda.edPrecoUnitario.Text := FormatFloat('0.00', Produto.PrecoVenda);
+    FINALLY
+      FreeAndNil(produto);
+    end;
+  end
+  else
+  begin
+    FPedidosVenda.EdDescProduto.Text := '';
+    FPedidosVenda.edPrecoUnitario.Text := '0,00';
+  end;
+end;
+
+end.

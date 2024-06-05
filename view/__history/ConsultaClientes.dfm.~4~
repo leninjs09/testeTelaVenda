@@ -1,0 +1,45 @@
+inherited FConsultaClientes: TFConsultaClientes
+  Caption = 'Consulta Clientes'
+  TextHeight = 15
+  inherited Panel1: TPanel
+    ExplicitLeft = 0
+    ExplicitTop = 330
+    ExplicitWidth = 532
+    inherited btCancelar: TButton
+      ExplicitLeft = 364
+      ExplicitTop = 4
+    end
+    inherited btConfirmar: TButton
+      ExplicitLeft = 452
+      ExplicitTop = 4
+      ExplicitHeight = 33
+    end
+  end
+  inherited DBGrid1: TDBGrid
+    Columns = <
+      item
+        Expanded = False
+        FieldName = 'Codigo'
+        Width = 72
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'Nome'
+        Width = 204
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'Cidade'
+        Width = 119
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'UF'
+        Width = 79
+        Visible = True
+      end>
+  end
+end

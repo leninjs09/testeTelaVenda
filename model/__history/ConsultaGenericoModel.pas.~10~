@@ -1,0 +1,60 @@
+unit ConsultaGenericoModel;
+
+interface
+
+uses
+  System.SysUtils, System.Classes, FireDAC.Stan.Intf, FireDAC.Stan.Option,
+  FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf,
+  FireDAC.DApt.Intf, Data.DB, FireDAC.Comp.DataSet, FireDAC.Comp.Client;
+
+type
+  TfConsultaGenericoModel = class(TDataModule)
+    tbConsulta: TFDMemTable;
+    dsConsulta: TDataSource;
+  private
+    { Private declarations }
+  public
+    procedure Consulta(pSQL : string);
+    function pegaValorCodigo: integer;
+
+  end;
+
+var
+  fConsultaGenericoModel: TfConsultaGenericoModel;
+
+implementation
+
+uses
+  dm;
+
+{%CLASSGROUP 'Vcl.Controls.TControl'}
+
+{$R *.dfm}
+
+{ TfConsultaGenericoModel }
+
+procedure TfConsultaGenericoModel.Consulta(pSQL : string);
+var
+  Qy : TFdQuery;
+begin
+
+  Qy := TFDQuery.Create(nil);
+  try
+    qy.Connection := DataModuleConexao.conexao;
+    qy.SQL.Add(pSQL);
+    qy.Open();
+
+    tbConsulta.Data := qy.Data;
+
+  finally
+    FreeAndNil(Qy);
+  end;
+
+end;
+
+function TfConsultaGenericoModel.pegaValorCodigo: integer;
+begin
+  result := tbConsulta.fields[0].AsInteger;
+end;
+
+end.

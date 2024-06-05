@@ -1,0 +1,185 @@
+unit dm;
+
+interface
+
+uses
+  System.SysUtils, System.Classes, FireDAC.Stan.Intf, FireDAC.Stan.Option,
+  FireDAC.Stan.Error, FireDAC.UI.Intf, FireDAC.Phys.Intf, FireDAC.Stan.Def,
+  FireDAC.Phys, FireDAC.Phys.MySQLDef, FireDAC.Stan.Param, FireDAC.DatS,
+  FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, Data.DB, System.UITypes,
+  FireDAC.Comp.DataSet, FireDAC.Comp.Client, FireDAC.Phys.MySQL,
+  FireDAC.Stan.Pool, FireDAC.VCLUI.Wait, inifiles, Winapi.Windows,
+  Winapi.Messages, System.Variants, Vcl.Forms, cliente, pedido_produto,
+  pedido, produto, Datasnap.DBClient, vcl.Dialogs, vcl.Controls;
+
+type
+  TDataModuleConexao = class(TDataModule)
+    FDPhysMySQLDriverLink1: TFDPhysMySQLDriverLink;
+    conexao: TFDConnection;
+    procedure DataModuleCreate(Sender: TObject);
+    procedure tbPedidoProdutosBeforePost(DataSet: TDataSet);
+  private
+    FIni : TIniFile;
+    procedure LerParametrosBanco;
+  public
+    function CarregarPedido: boolean;
+    procedure AdicionarProduto(pCodigoProduto, pCodigoCliente : integer; pQuantidade, pPrecoUnitario : real);
+    procedure ApagarProdutoPedido;
+    function GravarPedido(): boolean;
+    function ApagarPedido: boolean;
+  end;
+
+var
+  DataModuleConexao: TDataModuleConexao;
+
+implementation
+
+{%CLASSGROUP 'Vcl.Controls.TControl'}
+
+
+{$R *.dfm}
+
+function TDataModuleConexao.CarregarPedido: boolean;
+var
+  InputString: string;
+  Qy : TFdQuery;
+begin
+  result := false;
+  InputString := InputBox('Informe o número do pedido', 'Pedido:', '');
+
+  if InputString <> '' then
+  begin
+    result := true;
+
+    Qy := TFDQuery.Create(nil);
+    try
+      qy.Connection := conexao;
+      qy.SQL.Add('select');
+      qy.SQL.Add('p.numero_pedido,');
+      qy.SQL.Add('p.data_emissao,');
+      qy.SQL.Add('p.codigo_cliente,');
+      qy.SQL.Add('p.valor_total,');
+      qy.SQL.Add('pp.autoincrem,');
+      qy.SQL.Add('pp.codigo_produto,');
+      qy.SQL.Add('pp.quantidade,');
+      qy.SQL.Add('pp.valor_unitario,');
+      qy.SQL.Add('pp.valor_total as valorProduto');
+      qy.SQL.Add('from pedidos p');
+      qy.SQL.Add('join pedidos_produtos pp on pp.numero_pedido = p.numero_pedido');
+      qy.SQL.Add('where p.numero_pedido = :numero_pedido');
+      qy.ParamByName('numero_pedido').AsString := InputString;
+      qy.Open();
+
+      if not tbPedidoProdutos.IsEmpty then
+        tbPedidoProdutos.EmptyDataSet;
+
+      qy.First;
+      while not qy.Eof do
+      begin
+        AdicionarProduto(qy.FieldByName('codigo_produto').AsInteger, qy.FieldByName('codigo_cliente').AsInteger,
+          qy.FieldByName('quantidade').AsFloat, qy.FieldByName('valor_unitario').AsFloat);
+        qy.Next;
+      end;
+
+    finally
+      FreeAndNil(Qy);
+    end;
+  end;
+end;
+
+procedure TDataModuleConexao.DataModuleCreate(Sender: TObject);
+begin
+
+  tbPedidoProdutos.CreateDataSet;
+  LerParametrosBanco;
+
+end;
+
+function TDataModuleConexao.GravarPedido: boolean;
+var
+  Pedido : TPedido;
+  PedidoProduto : TPedidoProduto;
+  NumeroPedido : integer;
+begin
+
+  result := False;
+  if DataModuleConexao.tbPedidoProdutos.IsEmpty then
+    exit;
+
+  conexao.StartTransaction;
+  Pedido := TPedido.Create(conexao);
+  PedidoProduto := TPedidoProduto.Create(conexao);
+  try
+    try
+      NumeroPedido := Pedido.GerarNumeroPedido;
+      Pedido.Pesquisar('-1');
+      Pedido.NumeroPedido := NumeroPedido;
+      Pedido.DataEmissao := Now;
+      Pedido.CodigoCliente := tbPedidoProdutosCodigoCliente.AsInteger;
+      Pedido.ValorTotal := CalcularTotalPedido;
+      Pedido.Gravar;
+
+      tbPedidoProdutos.First;
+      while not tbPedidoProdutos.Eof do
+      begin
+
+        PedidoProduto.Pesquisar('-1');
+        PedidoProduto.autoincrem := -1;
+        PedidoProduto.NumeroPedido := NumeroPedido;
+        PedidoProduto.CodigoProduto := tbPedidoProdutosCodProduto.AsInteger;
+        PedidoProduto.Quantidade := tbPedidoProdutosQuantidade.AsFloat;
+        PedidoProduto.ValorUnitario := tbPedidoProdutosPrecoUnitario.AsFloat;
+        PedidoProduto.ValorTotal := tbPedidoProdutosTotal.AsFloat;
+        PedidoProduto.Gravar;
+
+        tbPedidoProdutos.Next;
+      end;
+
+      conexao.Commit;
+      result := true;
+      MessageDlg('Pedido gravado com sucesso.', TMsgDlgType.mtInformation, [mbOk],0);
+
+    except
+      on e: Exception do
+      begin
+        conexao.Rollback;
+        MessageDlg('Erro ao gravar pedido' + #13 + 'Erro:' + e.Message, mtError, [mbOk],0);
+      end;
+    end;
+
+  finally
+    FreeAndNil(Pedido);
+    FreeAndNil(PedidoProduto);
+  end;
+
+end;
+
+procedure TDataModuleConexao.LerParametrosBanco;
+begin
+
+  FIni := TIniFile.Create(ExtractFilePath(Application.ExeName) + 'Config.ini');
+
+  Conexao.Connected := false;
+  Conexao.Params.Values['Server'] := fini.ReadString('PARAMENTROS', 'SERVER', 'LOCALHOST');
+  Conexao.Params.Values['Port'] := fini.ReadString('PARAMENTROS', 'PORT', '3306');
+  Conexao.Params.Values['Database'] := fini.ReadString('PARAMENTROS', 'DATABASE', 'banco_prova');
+  Conexao.Params.Values['User_Name'] := fini.ReadString('PARAMENTROS', 'USERNAME', 'root');
+  Conexao.Params.Values['Password'] := fini.ReadString('PARAMENTROS', 'PASSWORD', '12345');
+  Conexao.DriverName := 'MySQL';
+  Conexao.Connected := true;
+
+  FDPhysMySQLDriverLink1.VendorLib := ExtractFilePath(Application.ExeName) + 'libmysql.dll';
+
+end;
+
+procedure TDataModuleConexao.tbPedidoProdutosBeforePost(DataSet: TDataSet);
+begin
+
+  tbPedidoProdutosTotal.Value := tbPedidoProdutosQuantidade.Value * tbPedidoProdutosPrecoUnitario.Value;
+
+  if (tbPedidoProdutosCodProduto.Value = 0) or (tbPedidoProdutosDescricao.AsString = '') then
+    dataset.Cancel;
+
+end;
+
+end.

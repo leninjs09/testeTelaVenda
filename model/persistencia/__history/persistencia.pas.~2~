@@ -1,0 +1,258 @@
+unit persistencia;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, Vcl.StdCtrls,
+  FireDAC.UI.Intf, FireDAC.Phys.Intf, FireDAC.Stan.Def,
+  FireDAC.Phys, FireDAC.Phys.MySQLDef, FireDAC.Stan.Param, FireDAC.DatS,
+  FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt,
+  FireDAC.Comp.DataSet, FireDAC.Comp.Client, FireDAC.Phys.MySQL,
+  FireDAC.Stan.Pool, FireDAC.VCLUI.Wait, Datasnap.DBClient;
+
+type
+  TPersistencia = class(TObject)
+
+  private
+    FInserindo : boolean;
+    FCampos: TFDMemTable;
+    procedure LerCamposTabela;
+    procedure setTabela(const Value: string);
+  protected
+    valor : array of variant;
+    Fconexao: TFDConnection;
+    FTabela: string;
+    procedure PesquisaInterno(pQy : TDataSet); dynamic;
+    property Tabela : string read FTabela write setTabela;
+  public
+    constructor Create(pconexao: TFDConnection); dynamic;
+    procedure Pesquisar(pChave: string); dynamic;
+    procedure Gravar;
+    procedure Apagar;
+  end;
+
+implementation
+
+{ TPersistencia }
+
+constructor TPersistencia.Create(pconexao: TFDConnection);
+begin
+
+  fconexao := pconexao;
+  FCampos := TFDMemTable.Create(nil);
+
+end;
+
+procedure TPersistencia.Apagar;
+var
+  Qy : TFDQuery;
+  Condicao : string;
+  i : integer;
+begin
+
+  Qy := TFDQuery.Create(nil);
+  try
+    qy.Connection := Fconexao;
+
+    Condicao := ' where ';
+
+    Qy.SQL.Add('delete from ' + FTabela);
+
+    i := 0;
+    FCampos.First;
+    while not FCampos.Eof do
+    begin
+
+      if fCampos.FieldByName('key').AsString = 'PRI' then
+        Condicao := Condicao + FCampos.FieldByName('field').AsString + ' = ' + QuotedStr(valor[i]);
+
+      inc(i);
+      FCampos.Next;
+    end;
+    Qy.SQL.Add(Condicao);
+    qy.ExecSQL;
+
+  finally
+    FreeAndNil(Qy);
+  end;
+end;
+
+procedure TPersistencia.Gravar;
+var
+  Qy : TFDQuery;
+  i : integer;
+  Condicao, separador : string;
+
+  function formataCampo(pValor : variant; pTipoCampo : string): string;
+  begin
+
+    if LowerCase(pTipoCampo) = 'datetime' then
+      result := QuotedStr(FormatDateTime('yyyy-mm-dd hh:mm:ss', pValor))
+    else
+    if Pos('decimal', LowerCase(pTipoCampo)) > 0 then
+    begin
+      FormatSettings.DecimalSeparator := '.';
+      FormatSettings.ThousandSeparator := ',';
+      result := QuotedStr(FormatFloat('###0.00', pValor));
+      FormatSettings.DecimalSeparator := ',';
+      FormatSettings.ThousandSeparator := '.';
+    end
+    else
+      result := QuotedStr(valor[i]);
+
+  end;
+
+
+begin
+
+  Qy := TFDQuery.Create(nil);
+  try
+    qy.Connection := Fconexao;
+
+    separador := '';
+    Condicao := '';
+
+    if not FInserindo then
+    begin
+
+      Qy.SQL.Add('update ' + FTabela + ' set ');
+
+      i := 0;
+      FCampos.First;
+      while not FCampos.Eof do
+      begin
+
+        Qy.SQL.Add(separador  + FCampos.FieldByName('FIELD').AsString + ' = ' + formataCampo(valor[i], FCampos.FieldByName('type').AsString));
+
+        if fCampos.FieldByName('key').AsString = 'PRI' then
+          Condicao := Condicao + FCampos.FieldByName('field').AsString + ' = ' + QuotedStr(valor[i]);
+
+        separador := ',';
+        inc(i);
+        FCampos.Next;
+      end;
+      Qy.SQL.Add(Condicao);
+
+    end
+    else
+    begin
+
+      Qy.SQL.Add('INSERT INTO '  + FTabela + ' ( ');
+
+      FCampos.First;
+      while not FCampos.Eof do
+      begin
+
+        if FCampos.FieldByName('extra').AsString <> 'auto_increment' then
+        begin
+          Qy.SQL.Add(separador + FCampos.FieldByName('FIELD').AsString);
+          separador := ',';
+        end;
+
+        inc(i);
+        FCampos.Next;
+      end;
+
+      Qy.SQL.Add(' ) values ( ');
+
+      separador := '';
+      FCampos.First;
+      for i := 0 to High(valor) do
+      begin
+
+        if FCampos.FieldByName('extra').AsString <> 'auto_increment' then
+        begin
+
+          Qy.SQL.Add(separador + formataCampo(valor[i], FCampos.FieldByName('type').AsString));
+          separador := ',';
+
+        end;
+        FCampos.Next;
+      end;
+      Qy.SQL.Add(')');
+
+    end;
+
+    Qy.ExecSQL;
+  finally
+    FreeAndNil(Qy);
+  end;
+end;
+
+procedure TPersistencia.LerCamposTabela;
+var
+  Qy : TFDQuery;
+begin
+
+  Qy := TFDQuery.Create(nil);
+  try
+    qy.Connection := Fconexao;
+    Qy.Close;
+    Qy.SQL.Text := 'SHOW COLUMNS FROM ' + FTabela;
+    Qy.Open();
+
+    FCampos.Data := Qy.Data;
+
+    SetLength(valor, Qy.RecordCount);
+  finally
+    FreeAndNil(Qy);
+  end;
+end;
+
+procedure TPersistencia.PesquisaInterno(pQy: TDataSet);
+begin
+
+end;
+
+procedure TPersistencia.Pesquisar(pChave: string);
+var
+  Qy : TFDQuery;
+  Condicao : string;
+begin
+
+  Qy := TFDQuery.Create(nil);
+  try
+    qy.Connection := Fconexao;
+    Qy.Close;
+    Qy.SQL.Add('select ');
+
+    Condicao := ' where ';
+
+    FCampos.First;
+    Qy.SQL.Add(FCampos.FieldByName('field').AsString);
+    if fCampos.FieldByName('key').AsString = 'PRI' then
+      Condicao := Condicao + FCampos.FieldByName('field').AsString + ' = ' + QuotedStr(pChave);
+
+    FCampos.Next;
+    while not fcampos.Eof do
+    begin
+      Qy.SQL.Add(',' + FCampos.FieldByName('field').AsString);
+
+      if fCampos.FieldByName('key').AsString = 'PRI' then
+        Condicao := Condicao + FCampos.FieldByName('field').AsString + ' = ' + QuotedStr(pChave);
+
+      fcampos.Next;
+    end;
+
+    Qy.SQL.Add(' from ' + FTabela);
+    Qy.SQL.Add(Condicao);
+    Qy.Open();
+
+    FInserindo := qy.IsEmpty;
+
+    if not qy.IsEmpty then
+      PesquisaInterno(Qy);
+
+  finally
+    FreeAndNil(Qy);
+  end;
+end;
+
+procedure TPersistencia.setTabela(const Value: string);
+begin
+  FTabela := Value;
+  LerCamposTabela;
+end;
+
+end.

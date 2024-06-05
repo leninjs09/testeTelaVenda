@@ -1,0 +1,321 @@
+object FPedidosVenda: TFPedidosVenda
+  Left = 0
+  Top = 0
+  Caption = 'Pedidos de Venda'
+  ClientHeight = 612
+  ClientWidth = 733
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -12
+  Font.Name = 'Segoe UI'
+  Font.Style = []
+  Position = poMainFormCenter
+  OnCreate = FormCreate
+  TextHeight = 15
+  object Panel1: TPanel
+    Left = 0
+    Top = 0
+    Width = 733
+    Height = 209
+    Align = alTop
+    TabOrder = 0
+    ExplicitWidth = 729
+    object gbProduto: TGroupBox
+      AlignWithMargins = True
+      Left = 4
+      Top = 136
+      Width = 725
+      Height = 69
+      Align = alBottom
+      Caption = 'Produto'
+      TabOrder = 1
+      ExplicitWidth = 721
+      object Label2: TLabel
+        Left = 46
+        Top = 17
+        Width = 39
+        Height = 15
+        Caption = 'Codigo'
+      end
+      object Label3: TLabel
+        Left = 149
+        Top = 17
+        Width = 51
+        Height = 15
+        Caption = 'Descri'#231#227'o'
+      end
+      object Label4: TLabel
+        Left = 449
+        Top = 17
+        Width = 62
+        Height = 15
+        Caption = 'Quantidade'
+      end
+      object Label5: TLabel
+        Left = 517
+        Top = 17
+        Width = 71
+        Height = 15
+        Caption = 'Valor Unitario'
+      end
+      object edCodProduto: TEdit
+        Left = 46
+        Top = 31
+        Width = 97
+        Height = 23
+        Alignment = taRightJustify
+        NumbersOnly = True
+        TabOrder = 0
+        OnChange = edCodProdutoChange
+      end
+      object EdDescProduto: TEdit
+        Left = 149
+        Top = 31
+        Width = 294
+        Height = 23
+        TabStop = False
+        ReadOnly = True
+        TabOrder = 1
+      end
+      object EdQuantidade: TEdit
+        Left = 449
+        Top = 31
+        Width = 62
+        Height = 23
+        Alignment = taRightJustify
+        TabOrder = 2
+        Text = '1'
+        OnKeyPress = EdQuantidadeKeyPress
+      end
+      object btAddProduto: TButton
+        AlignWithMargins = True
+        Left = 606
+        Top = 20
+        Width = 114
+        Height = 44
+        Align = alRight
+        Caption = 'Confirmar Produto'
+        TabOrder = 4
+        OnClick = btAddProdutoClick
+        ExplicitLeft = 605
+      end
+      object edPrecoUnitario: TEdit
+        Left = 517
+        Top = 31
+        Width = 84
+        Height = 23
+        Alignment = taRightJustify
+        TabOrder = 3
+        Text = '0,00'
+        OnKeyPress = EdQuantidadeKeyPress
+      end
+      object btConsultaProduto: TButton
+        Left = 9
+        Top = 29
+        Width = 32
+        Height = 25
+        Caption = '...'
+        TabOrder = 5
+        TabStop = False
+        OnClick = btConsultaProdutoClick
+      end
+    end
+    object gbCliente: TGroupBox
+      AlignWithMargins = True
+      Left = 4
+      Top = 68
+      Width = 725
+      Height = 62
+      Align = alClient
+      Caption = 'Cliente'
+      TabOrder = 0
+      ExplicitWidth = 721
+      object Label1: TLabel
+        Left = 46
+        Top = 15
+        Width = 39
+        Height = 15
+        Caption = 'Codigo'
+      end
+      object Label6: TLabel
+        Left = 149
+        Top = 15
+        Width = 33
+        Height = 15
+        Caption = 'Nome'
+      end
+      object edCodCliente: TEdit
+        Left = 46
+        Top = 29
+        Width = 97
+        Height = 23
+        Alignment = taRightJustify
+        NumbersOnly = True
+        TabOrder = 0
+        OnChange = edCodClienteChange
+      end
+      object edCliente: TEdit
+        Left = 149
+        Top = 29
+        Width = 294
+        Height = 23
+        TabStop = False
+        ReadOnly = True
+        TabOrder = 1
+      end
+      object btConsultaCliente: TButton
+        Left = 9
+        Top = 27
+        Width = 32
+        Height = 25
+        Caption = '...'
+        TabOrder = 2
+        TabStop = False
+        OnClick = btConsultaClienteClick
+      end
+    end
+    object pnBarraBotoes: TPanel
+      Left = 1
+      Top = 1
+      Width = 731
+      Height = 64
+      Align = alTop
+      TabOrder = 2
+      ExplicitWidth = 727
+      object BtGravarPedido: TButton
+        Left = 1
+        Top = 1
+        Width = 120
+        Height = 62
+        Align = alLeft
+        Caption = 'Gravar Pedido'
+        TabOrder = 0
+        OnClick = BtGravarPedidoClick
+      end
+      object btCarregarPedido: TButton
+        Left = 243
+        Top = 1
+        Width = 120
+        Height = 62
+        Caption = 'Carregar Pedido'
+        TabOrder = 1
+        TabStop = False
+        OnClick = btCarregarPedidoClick
+      end
+      object btCancelarPedido: TButton
+        Left = 365
+        Top = 1
+        Width = 120
+        Height = 62
+        Caption = 'Cancelar Pedido'
+        TabOrder = 2
+        TabStop = False
+        OnClick = btCancelarPedidoClick
+      end
+      object btLimpar: TButton
+        Left = 122
+        Top = 1
+        Width = 120
+        Height = 62
+        Caption = 'Limpar Tela'
+        TabOrder = 3
+        TabStop = False
+        OnClick = btLimparClick
+      end
+    end
+  end
+  object Panel2: TPanel
+    Left = 0
+    Top = 209
+    Width = 733
+    Height = 362
+    Align = alClient
+    TabOrder = 1
+    ExplicitWidth = 729
+    ExplicitHeight = 361
+    object DBGrid1: TDBGrid
+      AlignWithMargins = True
+      Left = 4
+      Top = 4
+      Width = 725
+      Height = 354
+      TabStop = False
+      Align = alClient
+      DataSource = DataModuleConexao.dsPedidoProdutos
+      Options = [dgEditing, dgTitles, dgColumnResize, dgColLines, dgTabs, dgAlwaysShowSelection, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
+      TabOrder = 0
+      TitleFont.Charset = DEFAULT_CHARSET
+      TitleFont.Color = clWindowText
+      TitleFont.Height = -12
+      TitleFont.Name = 'Segoe UI'
+      TitleFont.Style = []
+      OnKeyDown = DBGrid1KeyDown
+      Columns = <
+        item
+          ButtonStyle = cbsNone
+          Expanded = False
+          FieldName = 'CodProduto'
+          ReadOnly = True
+          Title.Caption = 'Codigo'
+          Width = 89
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'Descricao'
+          ReadOnly = True
+          Title.Caption = 'Produto'
+          Width = 275
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'Quantidade'
+          Width = 83
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'PrecoUnitario'
+          Title.Caption = 'Preco Unit'#225'rio'
+          Width = 120
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'Total'
+          ReadOnly = True
+          Width = 120
+          Visible = True
+        end>
+    end
+  end
+  object Panel3: TPanel
+    Left = 0
+    Top = 571
+    Width = 733
+    Height = 41
+    Align = alBottom
+    TabOrder = 2
+    ExplicitTop = 570
+    ExplicitWidth = 729
+    object lbTotal: TLabel
+      AlignWithMargins = True
+      Left = 643
+      Top = 4
+      Width = 86
+      Height = 33
+      Align = alRight
+      Alignment = taRightJustify
+      Caption = 'R$ 0,00'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -24
+      Font.Name = 'Segoe UI'
+      Font.Style = [fsBold]
+      ParentFont = False
+      ExplicitHeight = 32
+    end
+  end
+end

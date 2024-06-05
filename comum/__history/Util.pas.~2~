@@ -1,0 +1,35 @@
+unit Util;
+
+interface
+
+uses
+  System.SysUtils, System.Variants, Vcl.Graphics, Winapi.Windows, Winapi.Messages;
+
+type
+  TUtil = class
+
+  private
+
+  public
+    class function EhNumero(S: string): Boolean;
+  end;
+
+implementation
+
+{ TUtil }
+
+class function TUtil.EhNumero(S: string): Boolean;
+var
+  I: Integer;
+begin
+  Result := True;
+  for I := 1 to Lenght(S) do begin
+    if not (S[I] in ['0'..'9']) then begin
+      Result := False;
+      Break;
+    end;
+  end;
+
+end;
+
+end.

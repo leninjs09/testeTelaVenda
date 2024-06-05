@@ -1,0 +1,56 @@
+object DataModuleConexao: TDataModuleConexao
+  OnCreate = DataModuleCreate
+  Height = 263
+  Width = 346
+  object FDPhysMySQLDriverLink1: TFDPhysMySQLDriverLink
+    Left = 168
+    Top = 16
+  end
+  object conexao: TFDConnection
+    Params.Strings = (
+      'Database=banco_prova'
+      'User_Name=root'
+      'Password=12345'
+      'DriverID=MySQL')
+    LoginPrompt = False
+    Left = 48
+    Top = 16
+  end
+  object dsPedidoProdutos: TDataSource
+    DataSet = tbPedidoProdutos
+    Left = 168
+    Top = 104
+  end
+  object tbPedidoProdutos: TFDMemTable
+    BeforePost = tbPedidoProdutosBeforePost
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
+    ResourceOptions.AssignedValues = [rvSilentMode]
+    ResourceOptions.SilentMode = True
+    UpdateOptions.AssignedValues = [uvCheckRequired, uvAutoCommitUpdates]
+    UpdateOptions.CheckRequired = False
+    UpdateOptions.AutoCommitUpdates = True
+    Left = 48
+    Top = 104
+    object tbPedidoProdutosCodProduto: TIntegerField
+      FieldName = 'CodProduto'
+    end
+    object tbPedidoProdutosDescricao: TStringField
+      FieldName = 'Descricao'
+      Size = 50
+    end
+    object tbPedidoProdutosQuantidade: TFloatField
+      FieldName = 'Quantidade'
+    end
+    object tbPedidoProdutosPrecoUnitario: TCurrencyField
+      FieldName = 'PrecoUnitario'
+    end
+    object tbPedidoProdutosTotal: TCurrencyField
+      FieldKind = fkInternalCalc
+      FieldName = 'Total'
+    end
+    object tbPedidoProdutosCodigoCliente: TIntegerField
+      FieldName = 'CodigoCliente'
+    end
+  end
+end

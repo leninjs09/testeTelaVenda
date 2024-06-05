@@ -1,0 +1,67 @@
+object FConsultaGenerico: TFConsultaGenerico
+  Left = 0
+  Top = 0
+  Caption = 'Tela de Consulta'
+  ClientHeight = 372
+  ClientWidth = 536
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -12
+  Font.Name = 'Segoe UI'
+  Font.Style = []
+  OnCreate = FormCreate
+  TextHeight = 15
+  object Panel1: TPanel
+    Left = 0
+    Top = 331
+    Width = 536
+    Height = 41
+    Align = alBottom
+    TabOrder = 0
+    ExplicitLeft = 192
+    ExplicitTop = 336
+    ExplicitWidth = 185
+    object btCancelar: TButton
+      AlignWithMargins = True
+      Left = 368
+      Top = 4
+      Width = 82
+      Height = 33
+      Align = alRight
+      Caption = 'Cancelar'
+      TabOrder = 0
+      ExplicitLeft = 312
+      ExplicitTop = -4
+    end
+    object btConfirmar: TButton
+      AlignWithMargins = True
+      Left = 456
+      Top = 4
+      Width = 76
+      Height = 33
+      Align = alRight
+      Caption = 'Confirmar'
+      TabOrder = 1
+      ExplicitLeft = 432
+      ExplicitTop = 1
+      ExplicitHeight = 39
+    end
+  end
+  object Grid: TDBGrid
+    Left = 0
+    Top = 0
+    Width = 536
+    Height = 331
+    Align = alClient
+    DataSource = fConsultaGenericoModel.dsConsulta
+    Options = [dgTitles, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
+    TabOrder = 1
+    TitleFont.Charset = DEFAULT_CHARSET
+    TitleFont.Color = clWindowText
+    TitleFont.Height = -12
+    TitleFont.Name = 'Segoe UI'
+    TitleFont.Style = []
+    OnCellClick = GridCellClick
+  end
+end

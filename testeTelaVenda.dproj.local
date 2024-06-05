@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2024/06/02 19:31:36.000.344,=C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2024/06/02 19:35:11.000.952,C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\Unit1.dfm=C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\PedidosVenda.dfm</Transaction>
+    <Transaction>2024/06/02 19:35:11.000.952,C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\Unit1.pas=C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\PedidosVenda.pas</Transaction>
+    <Transaction>2024/06/02 19:35:12.000.859,C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\Project1.dproj=C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\Project1.dproj</Transaction>
+    <Transaction>2024/06/02 19:35:30.000.268,C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\Project1.dproj=C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\prova.dproj</Transaction>
+    <Transaction>2024/06/02 20:58:50.000.456,=C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\Unit1.pas</Transaction>
+    <Transaction>2024/06/02 21:00:36.000.933,C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\Unit1.dfm=C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\dm.dfm</Transaction>
+    <Transaction>2024/06/02 21:00:36.000.933,C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\Unit1.pas=C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\dm.pas</Transaction>
+    <Transaction>2024/06/03 12:04:00.000.000,=C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\Unit1.pas</Transaction>
+    <Transaction>2024/06/03 12:07:27.000.014,C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\Unit1.pas=C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\comum\Util.pas</Transaction>
+    <Transaction>2024/06/03 15:25:49.000.452,=C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\Unit1.pas</Transaction>
+    <Transaction>2024/06/03 15:26:15.000.733,C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\persistencia\produto.pas=C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\Unit1.pas</Transaction>
+    <Transaction>2024/06/03 16:19:33.000.955,=C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\Unit1.pas</Transaction>
+    <Transaction>2024/06/03 16:20:01.000.443,C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\persistencia\clientes.pas=C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\Unit1.pas</Transaction>
+    <Transaction>2024/06/03 16:20:08.000.009,=C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\Unit1.pas</Transaction>
+    <Transaction>2024/06/03 16:21:27.000.083,C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\persistencia\pedido.pas=C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\Unit1.pas</Transaction>
+    <Transaction>2024/06/03 16:22:16.000.227,C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\persistencia\cliente.pas=C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\persistencia\clientes.pas</Transaction>
+    <Transaction>2024/06/03 16:48:17.000.022,=C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\Unit1.pas</Transaction>
+    <Transaction>2024/06/03 16:48:38.000.115,C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\persistencia\pedido_produto.pas=C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\Unit1.pas</Transaction>
+    <Transaction>2024/06/03 19:02:11.000.672,=C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\Unit1.pas</Transaction>
+    <Transaction>2024/06/03 19:02:37.000.594,C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\persistencia\persistencia.pas=C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\Unit1.pas</Transaction>
+    <Transaction>2024/06/05 09:21:16.000.121,C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\view\PedidosVenda.pas=C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\PedidosVenda.pas</Transaction>
+    <Transaction>2024/06/05 09:21:16.000.121,C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\view\PedidosVenda.dfm=C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\PedidosVenda.dfm</Transaction>
+    <Transaction>2024/06/05 09:28:12.000.252,C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\model\dm.pas=C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\dm.pas</Transaction>
+    <Transaction>2024/06/05 09:28:12.000.252,C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\model\dm.dfm=C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\dm.dfm</Transaction>
+    <Transaction>2024/06/05 09:29:32.000.248,=C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\Unit1.pas</Transaction>
+    <Transaction>2024/06/05 09:30:22.000.229,C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\controller\PedidosVendaController.pas=C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\Unit1.pas</Transaction>
+    <Transaction>2024/06/05 09:37:13.000.860,C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\model\persistencia\pedido.pas=C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\persistencia\pedido.pas</Transaction>
+    <Transaction>2024/06/05 09:39:05.000.539,C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\model\persistencia\cliente.pas=C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\persistencia\cliente.pas</Transaction>
+    <Transaction>2024/06/05 09:39:32.000.954,C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\model\persistencia\pedido_produto.pas=C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\persistencia\pedido_produto.pas</Transaction>
+    <Transaction>2024/06/05 09:40:00.000.220,C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\model\persistencia\persistencia.pas=C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\persistencia\persistencia.pas</Transaction>
+    <Transaction>2024/06/05 09:40:11.000.602,C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\model\persistencia\produto.pas=C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\persistencia\produto.pas</Transaction>
+    <Transaction>2024/06/05 10:04:26.000.219,=C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\Unit1.pas</Transaction>
+    <Transaction>2024/06/05 10:06:35.000.164,C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\view\ConsultaGenerico.dfm=C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\Unit1.dfm</Transaction>
+    <Transaction>2024/06/05 10:06:35.000.164,C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\view\ConsultaGenerico.pas=C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\Unit1.pas</Transaction>
+    <Transaction>2024/06/05 10:21:45.000.099,=C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\Unit1.pas</Transaction>
+    <Transaction>2024/06/05 10:23:41.000.943,C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\controller\ConsultaGenericoController.pas=C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\Unit1.pas</Transaction>
+    <Transaction>2024/06/05 10:25:42.000.705,=C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\Unit1.pas</Transaction>
+    <Transaction>2024/06/05 10:26:27.000.619,C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\view\ConsultaClientes.pas=C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\Unit1.pas</Transaction>
+    <Transaction>2024/06/05 10:26:27.000.619,C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\view\ConsultaClientes.dfm=C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\Unit1.dfm</Transaction>
+    <Transaction>2024/06/05 10:27:39.000.059,=C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\Unit1.pas</Transaction>
+    <Transaction>2024/06/05 10:28:04.000.899,C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\view\ConsultaProdutos.pas=C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\Unit1.pas</Transaction>
+    <Transaction>2024/06/05 10:28:04.000.899,C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\view\ConsultaProdutos.dfm=C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\Unit1.dfm</Transaction>
+    <Transaction>2024/06/05 10:38:49.000.402,=C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\Unit1.pas</Transaction>
+    <Transaction>2024/06/05 10:39:25.000.850,C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\model\ConsultaGenericoModel.dfm=C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\Unit1.dfm</Transaction>
+    <Transaction>2024/06/05 10:39:25.000.850,C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\model\ConsultaGenericoModel.pas=C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\Unit1.pas</Transaction>
+    <Transaction>2024/06/05 12:12:26.000.125,=C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\Unit1.pas</Transaction>
+    <Transaction>2024/06/05 12:13:21.000.007,=C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\Unit1.pas</Transaction>
+    <Transaction>2024/06/05 12:13:44.000.508,C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\model\PedidoVendaModel.pas=C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\Unit1.pas</Transaction>
+    <Transaction>2024/06/05 12:13:44.000.508,C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\model\PedidoVendaModel.dfm=C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\prova\Unit1.dfm</Transaction>
+    <Transaction>2024/06/05 16:56:15.503,C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\testeTelaVenda\testeTelaVenda.dproj=C:\Users\lenin\OneDrive\Documents\Embarcadero\Studio\Projects\testeTelaVenda\prova.dproj</Transaction>
+  </Transactions>
+</BorlandProject>

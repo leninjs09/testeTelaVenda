@@ -1,0 +1,4 @@
+inherited FConsultaClientes: TFConsultaClientes
+  Caption = 'Consulta Clientes'
+  TextHeight = 15
+end
