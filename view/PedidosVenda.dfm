@@ -205,7 +205,7 @@ object FPedidosVenda: TFPedidosVenda
         OnClick = btCarregarPedidoClick
       end
       object btCancelarPedido: TButton
-        Left = 365
+        Left = 364
         Top = 1
         Width = 120
         Height = 62

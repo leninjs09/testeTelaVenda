@@ -3,14 +3,13 @@ unit PedidoVendaModel;
 interface
 
 uses
-  System.SysUtils, System.Classes, FireDAC.Stan.Intf, FireDAC.Stan.Option,
-  FireDAC.Stan.Error, FireDAC.UI.Intf, FireDAC.Phys.Intf, FireDAC.Stan.Def,
-  FireDAC.Phys, FireDAC.Phys.MySQLDef, FireDAC.Stan.Param, FireDAC.DatS,
-  FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, Data.DB, System.UITypes,
+  System.SysUtils, System.Classes,
   FireDAC.Comp.DataSet, FireDAC.Comp.Client, FireDAC.Phys.MySQL,
-  FireDAC.Stan.Pool, FireDAC.VCLUI.Wait, inifiles, Winapi.Windows,
   Winapi.Messages, System.Variants, Vcl.Forms, cliente, pedido_produto,
-  pedido, produto, Datasnap.DBClient, vcl.Dialogs, vcl.Controls;
+  pedido, produto, Datasnap.DBClient, vcl.Dialogs, System.UITypes, vcl.Controls,
+  FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
+  FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
+  Data.DB;
 
 type
   TFPedidosVendaModel = class(TDataModule)
@@ -78,8 +77,10 @@ var
   Pedido : TPedido;
   PedidoProduto : TPedidoProduto;
   Qy : TFdQuery;
+  Achou : boolean;
 begin
   result := false;
+  Achou := false;
   InputString := InputBox('Informe o número do pedido', 'Pedido:', '');
 
   if InputString <> '' then
@@ -108,11 +109,20 @@ begin
         end;
 
         Pedido.Pesquisar(InputString);
-        Pedido.Apagar;
+        Achou := pedido.NumeroPedido > 0;
 
-        result := true;
-        DataModuleConexao.conexao.Commit;
-        MessageDlg('Pedido ' + InputString + ' apagado com sucesso.', TMsgDlgType.mtInformation, [mbOk],0);
+        if Achou then
+        begin
+          Pedido.Apagar;
+          result := true;
+          DataModuleConexao.conexao.Commit;
+          MessageDlg('Pedido ' + InputString + ' apagado com sucesso.', TMsgDlgType.mtInformation, [mbOk],0);
+        end
+        else
+        begin
+          DataModuleConexao.conexao.Rollback;
+          MessageDlg('Pedido ' + InputString + ' não encontrado.', TMsgDlgType.mtInformation, [mbOk],0);
+        end;
 
       except
         on e: Exception do

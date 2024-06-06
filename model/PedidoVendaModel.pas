@@ -77,6 +77,7 @@ var
   Pedido : TPedido;
   PedidoProduto : TPedidoProduto;
   Qy : TFdQuery;
+  Achou : boolean;
 begin
   result := false;
   InputString := InputBox('Informe o número do pedido', 'Pedido:', '');
@@ -107,11 +108,20 @@ begin
         end;
 
         Pedido.Pesquisar(InputString);
-        Pedido.Apagar;
+        Achou := pedido.NumeroPedido > 0;
 
-        result := true;
-        DataModuleConexao.conexao.Commit;
-        MessageDlg('Pedido ' + InputString + ' apagado com sucesso.', TMsgDlgType.mtInformation, [mbOk],0);
+        if Achou then
+        begin
+          Pedido.Apagar;
+          result := true;
+          DataModuleConexao.conexao.Commit;
+          MessageDlg('Pedido ' + InputString + ' apagado com sucesso.', TMsgDlgType.mtInformation, [mbOk],0);
+        end
+        else
+        begin
+          DataModuleConexao.conexao.Rollback;
+          MessageDlg('Pedido ' + InputString + ' não encontrado.', TMsgDlgType.mtInformation, [mbOk],0);
+        end;
 
       except
         on e: Exception do
@@ -208,6 +218,12 @@ begin
         AdicionarProduto(qy.FieldByName('codigo_produto').AsInteger, qy.FieldByName('codigo_cliente').AsInteger,
           qy.FieldByName('quantidade').AsFloat, qy.FieldByName('valor_unitario').AsFloat);
         qy.Next;
+      end;
+
+      if qy.IsEmpty then
+      begin
+        Result := False;
+        MessageDlg('Pedido ' + InputString + ' não encontrado.', TMsgDlgType.mtInformation, [mbOk],0);
       end;
 
     finally

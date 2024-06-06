@@ -3,14 +3,13 @@ unit PedidoVendaModel;
 interface
 
 uses
-  System.SysUtils, System.Classes, FireDAC.Stan.Intf, FireDAC.Stan.Option,
-  FireDAC.Stan.Error, FireDAC.UI.Intf, FireDAC.Phys.Intf, FireDAC.Stan.Def,
-  FireDAC.Phys, FireDAC.Phys.MySQLDef, FireDAC.Stan.Param, FireDAC.DatS,
-  FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, Data.DB, System.UITypes,
+  System.SysUtils, System.Classes,
   FireDAC.Comp.DataSet, FireDAC.Comp.Client, FireDAC.Phys.MySQL,
-  FireDAC.Stan.Pool, FireDAC.VCLUI.Wait, inifiles, Winapi.Windows,
   Winapi.Messages, System.Variants, Vcl.Forms, cliente, pedido_produto,
-  pedido, produto, Datasnap.DBClient, vcl.Dialogs, vcl.Controls;
+  pedido, produto, Datasnap.DBClient, vcl.Dialogs, System.UITypes, vcl.Controls,
+  FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
+  FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
+  Data.DB;
 
 type
   TFPedidosVendaModel = class(TDataModule)
@@ -55,16 +54,20 @@ var
 begin
 
   Produto := TProduto.Create(DataModuleConexao.conexao);
-  produto.Pesquisar(pcodigoProduto.ToString);
+  try
+    produto.Pesquisar(pcodigoProduto.ToString);
 
-  tbPedidoProdutos.append;
-  tbPedidoProdutosCodProduto.AsInteger := Produto.Codigo;
-  tbPedidoProdutosDescricao.asstring := Produto.Descricao;
-  tbPedidoProdutosQuantidade.AsFloat := pQuantidade;
-  tbPedidoProdutosCodigoCliente.AsInteger := pCodigoCliente;
-  tbPedidoProdutosPrecoUnitario.Value := pPrecoUnitario;
-  tbPedidoProdutosTotal.Value := tbPedidoProdutosQuantidade.Value * tbPedidoProdutosPrecoUnitario.Value;
-  tbPedidoProdutos.post;
+    tbPedidoProdutos.append;
+    tbPedidoProdutosCodProduto.AsInteger := Produto.Codigo;
+    tbPedidoProdutosDescricao.asstring := Produto.Descricao;
+    tbPedidoProdutosQuantidade.AsFloat := pQuantidade;
+    tbPedidoProdutosCodigoCliente.AsInteger := pCodigoCliente;
+    tbPedidoProdutosPrecoUnitario.Value := pPrecoUnitario;
+    tbPedidoProdutosTotal.Value := tbPedidoProdutosQuantidade.Value * tbPedidoProdutosPrecoUnitario.Value;
+    tbPedidoProdutos.post;
+  finally
+    FreeAndNil(Produto);
+  end;
 
 end;
 
@@ -74,8 +77,10 @@ var
   Pedido : TPedido;
   PedidoProduto : TPedidoProduto;
   Qy : TFdQuery;
+  Achou : boolean;
 begin
   result := false;
+  Achou := false;
   InputString := InputBox('Informe o número do pedido', 'Pedido:', '');
 
   if InputString <> '' then
@@ -104,11 +109,13 @@ begin
         end;
 
         Pedido.Pesquisar(InputString);
+        Achou := pedido.NumeroPedido > 0;
         Pedido.Apagar;
 
         result := true;
         DataModuleConexao.conexao.Commit;
-        MessageDlg('Pedido ' + InputString + ' apagado com sucesso.', TMsgDlgType.mtInformation, [mbOk],0);
+        if Achou then
+          MessageDlg('Pedido ' + InputString + ' apagado com sucesso.', TMsgDlgType.mtInformation, [mbOk],0);
 
       except
         on e: Exception do
@@ -147,17 +154,21 @@ var
 begin
 
   tb := TFDMemTable.Create(nil);
-  tb.Data := tbPedidoProdutos.Data;
+  try
+    tb.Data := tbPedidoProdutos.Data;
 
-  total := 0;
-  tb.First;
-  while not tb.eof do
-  begin
-    total := total + tb.FieldByName('total').AsFloat;
-    tb.Next;
+    total := 0;
+    tb.First;
+    while not tb.eof do
+    begin
+      total := total + tb.FieldByName('total').AsFloat;
+      tb.Next;
+    end;
+
+    result := total;
+  finally
+    FreeAndNil(tb);
   end;
-
-  result := total;
 
 end;
 
@@ -278,7 +289,6 @@ procedure TFPedidosVendaModel.tbPedidoProdutosBeforePost(DataSet: TDataSet);
 begin
 
   tbPedidoProdutosTotal.Value := tbPedidoProdutosQuantidade.Value * tbPedidoProdutosPrecoUnitario.Value;
-//  CalcularTotalPedido;
 
   if (tbPedidoProdutosCodProduto.Value = 0) or (tbPedidoProdutosDescricao.AsString = '') then
     dataset.Cancel;
